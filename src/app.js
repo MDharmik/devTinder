@@ -2,43 +2,38 @@ const express = require('express');
 
 const app = express();
 
-// app.use("/hello/2", (req, res)=> {
-//     res.send("Hello again");
+// =========== /abc, /ac not for /ab ===========
+// app.get("/ab?c", (req, res) => {
+//     res.send({firstName:'Madhura', lastName:'Dharmik'});
 // });
 
-// app.use("/hello", (req, res)=> {
-//     res.send("Hello! Hello! Hello!");
+// =========== /abc, /abbbbbc not for /ac ============
+// app.get("/ab+c", (req, res) => {
+//     res.send({firstName:'Madhura', lastName:'Dharmik'});
 // });
 
-// app.use("/test", (req, res)=> {
-//     res.send("Hello from the Test Server!");
+// ========== /abcd, /abcbcbcd not for /ad, /abc ===========
+// app.get("/a(bc)+d", (req, res) => {
+//     res.send({firstName:'Madhura', lastName:'Dharmik'});
 // });
 
-// app.use("/", (req, res)=> {
-//     res.send("Hello from the dashboard!");
+// ========== /abc, /abbbbbbc, not for /abbb..., /ac =============
+// app.get("/ab*c", (req, res) => {
+//     res.send({firstName:'Madhura', lastName:'Dharmik'});
 // });
 
-// ==========================================================================================
+// =========== /abc?userId:101 ==================
+// app.get("/abc", (req, res) => {
+//     console.log(req.query);
+//     res.send({firstName:'Madhura', lastName:'Dharmik'});
+// });
 
-// This will only handle GET call to /user 
-app.get("/user", (req, res) => {
+// =========== /abc/101/xyz ==================
+app.get("/abc/:userId/:name", (req, res) => {
+    console.log(req.params);
     res.send({firstName:'Madhura', lastName:'Dharmik'});
 });
 
-app.post("/user", (req, res) => {
-    // saving data to DB
-    res.send("Data successfully saved to the DB");
-});
-
-app.delete("/user", (req, res) => {
-    res.send("Data deleted successfully");
-});
-
-
-// This will match all the HTTP method API calls to /test
-app.use("/test", (req, res)=> {
-    res.send("Hello from the Test Server!");
-});
 
 
 app.listen(7777, ()=> {
