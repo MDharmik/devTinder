@@ -32,3 +32,5 @@
 
 - write a dummy auth middleware for admin route
 - write a dummy user middleware for user route except /user/login
+
+- error handling using app.use('/', (err, req, res, next)=> {})
