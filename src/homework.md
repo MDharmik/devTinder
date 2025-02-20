@@ -29,3 +29,6 @@
 
 - what is middleware 
 - how express handles requests behind the scene
+
+- write a dummy auth middleware for admin route
+- write a dummy user middleware for user route except /user/login

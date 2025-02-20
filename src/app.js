@@ -1,32 +1,28 @@
-const express = require('express');
+const express = require("express");
 
 const app = express();
 
-// GET /users => it checks all the app.xxx('matching route') function
-// GET /users => middleware chain => request handler
+const { adminAuth, userAuth } = require("./middleware/auth");
 
-app.use('/', (req, res, next) => {
-    // res.send('handling / route');
-    next();
+app.use("/admin", adminAuth); // middleware created
+// app.use("/user", userAuth);      // single route so can write like below..
+
+app.get("/user", userAuth, (re, res) => {
+  res.send("user data sent");
 });
 
-app.get(
-    '/users', 
-    (req, res, next)=> {                                //middleware
-        console.log("Handling the route user");
-        next();
-    },
+app.post('/user/login', (req, res)=> {
+    res.send("User logged in successfully. No need for userAuth..")
+})
 
-    (req, res, next)=> {            //middleware
-        next();
-    },
+app.get("/admin/getAllData", (req, res) => {
+  res.send("all data sent");
+});
 
-    (req, res)=> {
-        res.send("2nd route handler");              // request handler
-    }
-);
-
+app.get("/admin/deleteUser", (re, res) => {
+  res.send("User deleted");
+});
 
 app.listen(7777, () => {
-    console.log("Server is successfully listening on port 7777...");
+  console.log("Server is successfully listening on port 7777...");
 });
