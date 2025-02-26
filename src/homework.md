@@ -34,3 +34,14 @@
 - write a dummy user middleware for user route except /user/login
 
 - error handling using app.use('/', (err, req, res, next)=> {})
+
+- create a free cluster on mongodb atlas
+- install mongoose library
+- connect your application to the DB <connection-url>/devTinder
+- call connectDB function and connect to database before starting the application on 7777 
+
+- Create userSchema & user Model
+- Create POST /signup API to add data to database
+- Push some documents using API calls from postman
+- Handle error using try and catch
+

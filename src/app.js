@@ -1,33 +1,31 @@
 const express = require("express");
-
+const connectDB = require("./config/database");
 const app = express();
+const User = require("./models/user");
 
-// this won't run bcoz error is not defined here
-app.use('/', (err, req, res, next)=> {
-    if(err){
-        res.status(500).send('Something went wrong1');
-    }
+app.post("/signup", async (req, res) => {
+  const user = new User({
+    firstName: "Madhura",
+    lastName: "Dharmik",
+    emailId: "madhura@gmail.com",
+    password: "madhura@123",
+  });
+
+  try {
+    await user.save();
+    res.send("User added successfully!");
+  } catch (err) {
+    res.status(400).send("Error saving the user:" + err.message);
+  }
 });
 
-app.get("/user/getUserData", (re, res) => {
-    // try{
-        throw new Error ("random error")
-        res.send("user data sent");
-    // }
-    // catch{
-    //     res.status(500).send('Something went wronggggggggggg')
-    // }
-   
-});
-
-// if no try catch block then this will run 
-
-app.use('/', (err, req, res, next)=> {
-    if(err){
-        res.status(500).send('Something went wrong2');
-    }
-});
-
-app.listen(7777, () => {
-  console.log("Server is successfully listening on port 7777...");
-});
+connectDB()
+  .then(() => {
+    console.log("Database connection established..");
+    app.listen(7777, () => {
+      console.log("Server is successfully listening on port 7777...");
+    });
+  })
+  .catch((error) => {
+    console.log("Database cannot be connected!!");
+  });
