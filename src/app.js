@@ -17,7 +17,6 @@ app.post("/signup", async (req, res) => {
 });
 
 // GET user by emailId
-
 app.get("/user", async (req, res) => {
   const userEmail = req.body.emailId;
 
@@ -53,7 +52,6 @@ app.get("/user", async (req, res) => {
 });
 
 // Feed API - GET /feed - get all the users from the database
-
 app.get("/feed", async (req, res) => {
   try {
     const users = await User.find({});
@@ -64,7 +62,6 @@ app.get("/feed", async (req, res) => {
 });
 
 // Delete the user
-
 app.delete('/user', async (req, res)=> {
   const userId = req.body.userId;
   try{
@@ -79,7 +76,6 @@ app.delete('/user', async (req, res)=> {
 });
 
 // Update data of the user
-
 app.patch("/user", async (req, res)=> {
   const userId = req.body.userId;
   const userEmail = req.body.emailId;
@@ -90,11 +86,14 @@ app.patch("/user", async (req, res)=> {
   //   res.send("User updated successfully");
   // }
   try{
-    const user = await User.findOneAndUpdate({emailId: userEmail}, data);
+    const user = await User.findOneAndUpdate({emailId: userEmail}, data, {
+      returnDocument: "after",
+      runValidators: true,
+    });
     res.send("User updated successfully");
   }
   catch(err) {
-    res.status(500).send("Something went wrong");
+    res.status(500).send("Something went wrong "+ err.message);
   }
 
 })
