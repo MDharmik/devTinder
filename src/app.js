@@ -2,13 +2,26 @@ const express = require("express");
 const connectDB = require("./config/database");
 const app = express();
 const User = require("./models/user");
+const { validateSignUpData } = require("./utils/validation");
+const bcrypy = require('bcrypt');
 
 app.use(express.json());
 
 app.post("/signup", async (req, res) => {
-  // creating instance of user model
-  const user = new User(req.body);
   try {
+    //  validation of data
+    validateSignUpData(req);
+
+    const {firstName, lastName, emailId, password} = req.body;
+
+    //  Encrypt the password
+    const passwordHash = await bcrypy.hash(password, 10);
+    console.log(passwordHash);
+
+    //  Creating a new instance of user model
+    const user = new User({
+      firstName, lastName, emailId, password: passwordHash // it will show error if line 15 not defined 
+    });
     await user.save();
     res.send("User added successfully!");
   } catch (err) {
@@ -86,19 +99,19 @@ app.patch("/user/:userId", async (req, res) => {
     "skills",
   ];
 
-   try {
+  try {
     const isUpdateAllowed = Object.keys(data).every((k) =>
       ALLOWED_UPDATES.includes(k)
     );
-  
-    if(!isUpdateAllowed){
-      throw new Error("Update not allowed")
+
+    if (!isUpdateAllowed) {
+      throw new Error("Update not allowed");
     }
-    if(data.skills?.length > 10){
+    if (data.skills?.length > 10) {
       throw new Error("Skills should not be more than 10");
     }
     // const user = await User.findOneAndUpdate({emailId: req.body.emailId}, data);
-    const user = await User.findByIdAndUpdate({_id: userId}, data, {
+    const user = await User.findByIdAndUpdate({ _id: userId }, data, {
       returnDocument: "after",
       runValidators: true,
     });
