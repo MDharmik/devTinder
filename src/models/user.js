@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       required: true,
       trim: true,
-      unique: true,
+      unique: true, // By adding unique it add index by default. No need to add index.
       validate(value) {
         if (!validator.isEmail(value)) {
           throw new Error("Invalid email address");
@@ -41,11 +41,15 @@ const userSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
-      validate(value) {
-        if (!["male", "female", "other"].includes(value)) {
-          throw new Error("Gender data is not valid");
-        }
+      enum: {
+        values: ["male", "female", "other"],
+        message: `{VALUE} is not a valid gender type`,
       },
+      // validate(value) {
+      //   if (!["male", "female", "other"].includes(value)) {
+      //     throw new Error("Gender data is not valid");
+      //   }
+      // },
     },
     photoUrl: {
       type: String,
@@ -68,6 +72,9 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+
+userSchema.index( {gender: 1} );
 
 // ======================== don't use arrow function here ===========================================================
 userSchema.methods.getJWT = async function () {

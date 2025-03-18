@@ -11,10 +11,10 @@
 - PATCH /profile/edit/password
 
 ## connectionRequestRouter
-- POST reuest/sent/interested/:userId
-- POST reuest/sent/ignored/:userId
-- POST reuest/received/accepted/:requestId
-- POST reuest/received/rejected/:requestId
+- POST request/sent/interested/:userId
+- POST request/sent/ignored/:userId
+- POST request/received/accepted/:requestId
+- POST request/received/rejected/:requestId
 
 ## userRouter
 - GET /user/connections
