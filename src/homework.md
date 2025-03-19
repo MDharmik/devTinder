@@ -107,3 +107,5 @@
 - Why do we need index in DB?
 - Advantages & disadvantages of creating indexes
 - What is compound indexes?
+
+- Write API with proper validation /request/review/:status/:requestId
